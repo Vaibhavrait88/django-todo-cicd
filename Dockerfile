@@ -2,10 +2,16 @@ FROM python:3
 
 WORKDIR /data
 
-# Install necessary dependencies, including distutils
-RUN apt-get update && apt-get install -y python3-distutils
+# Update package manager and install required Python utilities
+RUN apt-get update && apt-get install -y \
+    python3-distutils \
+    python3-pip \
+    python3-setuptools
 
-# Install Django
+# Upgrade pip to avoid compatibility issues
+RUN pip install --upgrade pip
+
+# Install Django and any other dependencies
 RUN pip install django==3.2
 
 # Copy application files
