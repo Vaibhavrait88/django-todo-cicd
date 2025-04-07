@@ -2,7 +2,7 @@ FROM python:3
 
 WORKDIR /data
 
-# Update package manager and install necessary utilities
+# Update package manager and install required utilities
 RUN apt-get update && apt-get install -y \
     python3-distutils \
     python3-pip \
@@ -10,11 +10,11 @@ RUN apt-get update && apt-get install -y \
     python3-dev \
     build-essential
 
-# Ensure distutils is properly accessible
-RUN ln -s /usr/lib/python3/dist-packages/distutils /usr/local/lib/python3.10/distutils
+# Ensure distutils is installed for the specific version of Python in the image
+RUN apt-get install -y python3.11-distutils || apt-get install -y python3.10-distutils || apt-get install -y python3.9-distutils
 
-# Upgrade pip to the latest version
-RUN pip install --upgrade pip
+# Upgrade pip to prevent compatibility issues
+RUN python -m ensurepip --upgrade && python -m pip install --upgrade pip
 
 # Install Django and other dependencies
 RUN pip install django==3.2
